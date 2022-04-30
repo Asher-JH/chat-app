@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 
 import firebase from "firebase/compat/app";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { serverTimestamp } from "firebase/firestore";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
@@ -39,8 +41,9 @@ function App() {
 
 function SignIn() {
   const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider);
   };
 
   return <button onClick={signInWithGoogle}>Sign in with Google</button>;
@@ -68,7 +71,7 @@ function ChatRoom() {
 
     await messagesRef.add({
       text: formValue,
-      createdAt: app.firestore.FieldValue.serverTimestamp(),
+      createdAt: serverTimestamp(),
       uid,
       photoURL,
     });
@@ -90,11 +93,11 @@ function ChatRoom() {
         <input
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
-          placeholder="say something nice"
+          placeholder="Say something bitch"
         />
 
         <button type="submit" disabled={!formValue}>
-          🕊️
+          🍞
         </button>
       </form>
     </>
